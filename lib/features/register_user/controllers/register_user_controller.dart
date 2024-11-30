@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:travel_bus_app/routes/app_pages.dart';
+import 'package:raj_kalpana_travels/routes/app_pages.dart';
 
 class RegisterUserController extends GetxController {
   // Form Key
@@ -18,8 +18,8 @@ class RegisterUserController extends GetxController {
   }
 
   // Controllers
-  final TextEditingController firstNameController = TextEditingController();
-  final TextEditingController lastNameController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
+
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController =
@@ -35,7 +35,7 @@ class RegisterUserController extends GetxController {
   }
 
   // Reactive error messages
-  RxString firstNameError = ''.obs;
+  RxString nameError = ''.obs;
   RxString lastNameError = ''.obs;
   RxString emailError = ''.obs;
   RxString passwordError = ''.obs;
@@ -43,19 +43,11 @@ class RegisterUserController extends GetxController {
   RxString dobError = ''.obs;
 
   // Validation methods
-  void validateFirstName(String value) {
+  void validateName(String value) {
     if (value.trim().length < 3) {
-      firstNameError.value = "At least 3 characters required";
+      nameError.value = "At least 3 characters required";
     } else {
-      firstNameError.value = '';
-    }
-  }
-
-  void validateLastName(String value) {
-    if (value.trim().length < 3) {
-      lastNameError.value = "At least 3 characters required";
-    } else {
-      lastNameError.value = '';
+      nameError.value = '';
     }
   }
 
@@ -100,8 +92,8 @@ class RegisterUserController extends GetxController {
 
   @override
   void onClose() {
-    firstNameController.dispose();
-    lastNameController.dispose();
+    nameController.dispose();
+
     emailController.dispose();
     passwordController.dispose();
     confirmPasswordController.dispose();

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:travel_bus_app/features/home/views/home_view.dart';
+import 'package:raj_kalpana_travels/features/home/views/home_view.dart';
 
 import '../../../shared/controllers/user_controller.dart';
 import '../../home/controllers/home_controller.dart';

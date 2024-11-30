@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:travel_bus_app/features/bus_listing/widgets/bus_card.dart';
-import 'package:travel_bus_app/routes/app_pages.dart';
+import 'package:raj_kalpana_travels/features/bus_listing/widgets/bus_card.dart';
+import 'package:raj_kalpana_travels/routes/app_pages.dart';
 import '../controllers/bus_listing_controller.dart';
 import 'package:intl/intl.dart';
 

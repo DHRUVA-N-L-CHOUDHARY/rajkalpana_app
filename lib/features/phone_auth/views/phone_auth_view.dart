@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:travel_bus_app/features/phone_auth/controllers/phone_auth_controller.dart';
+import 'package:raj_kalpana_travels/features/phone_auth/controllers/phone_auth_controller.dart';
 import '../../../routes/app_pages.dart';
 import '../../../shared/utils/constants.dart';
 import '../../../shared/widgets/app_button.dart';

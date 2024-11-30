@@ -176,7 +176,9 @@ class HomeView extends StatelessWidget {
                 }
               },
               decoration: InputDecoration(
-                hintText: hint,
+                hintText: hint.isNotEmpty
+                    ? hint.replaceFirst(hint[0], hint[0].toUpperCase())
+                    : null,
                 hintStyle: TextStyle(
                   color: Theme.of(context).hintColor,
                   fontSize: 16.sp,

@@ -207,7 +207,6 @@ class PassengerDetailsView extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 20.h),
-                // Contact Details Section
                 Text(
                   "Contact details:",
                   style: TextStyle(
@@ -262,7 +261,7 @@ class PassengerDetailsView extends StatelessWidget {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          Get.toNamed(AppPages.PHONE_AUTH);
+                          Get.toNamed(AppPages.TICKET_DETAILS);
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Color(0xFF66D2A8),

@@ -31,103 +31,58 @@ class EditProfileView extends StatelessWidget {
                       child: SingleChildScrollView(
                         child: Column(
                           children: [
-                            // SizedBox(height: 24.h),
+                            // Name Field
                             _buildTextField(
-                              label: "First Name",
-                              initialValue: controller.firstName,
-                              onChanged: (value) {
-                                controller.updateFirstName(value);
-                              },
+                              label: "Name",
+                              initialValue: controller.name,
+                              onChanged: (value) =>
+                                  controller.updateName(value),
                               context: context,
                             ),
                             SizedBox(height: 16.h),
-                            _buildTextField(
-                              label: "Last Name",
-                              initialValue: controller.lastName,
-                              onChanged: (value) {
-                                controller.updateLastName(value);
-                              },
-                              context: context,
-                            ),
+
+                            _buildDateOfBirthField(controller, context),
+
                             SizedBox(height: 16.h),
-                            _buildTextField(
-                              label: "Mobile Number",
-                              initialValue: controller.mobileNumber,
-                              onChanged: (value) {
-                                controller.updateMobileNumber(value);
-                              },
-                              keyboardType: TextInputType.phone,
-                              context: context,
-                            ),
-                            SizedBox(height: 16.h),
+
                             _buildTextField(
                               label: "Emergency Phone",
                               initialValue: controller.emergencyPhone,
-                              onChanged: (value) {
-                                controller.updateEmergencyPhone(value);
-                              },
+                              onChanged: (value) =>
+                                  controller.updateEmergencyPhone(value),
                               keyboardType: TextInputType.phone,
                               context: context,
                             ),
                             SizedBox(height: 16.h),
+
+                            // Pin Code Field
                             _buildTextField(
-                              label: "E-Mail",
-                              initialValue: controller.email,
-                              onChanged: (value) {
-                                controller.updateEmail(value);
-                              },
-                              keyboardType: TextInputType.emailAddress,
+                              label: "Pin Code",
+                              initialValue: controller.pinCode,
+                              onChanged: (value) =>
+                                  controller.updatePinCode(value),
+                              keyboardType: TextInputType.number,
                               context: context,
                             ),
                             SizedBox(height: 16.h),
-                            _buildTextField(
-                              label: "Nationality",
-                              initialValue: controller.nationality,
-                              onChanged: (value) {
-                                controller.updateNationality(value);
-                              },
-                              context: context,
-                            ),
-                            SizedBox(height: 16.h),
-                            _buildTextField(
-                              label: "State",
-                              initialValue: controller.state,
-                              onChanged: (value) {
-                                controller.updateState(value);
-                              },
-                              context: context,
-                            ),
-                            SizedBox(height: 16.h),
-                            _buildTextField(
-                              label: "City",
-                              initialValue: controller.city,
-                              onChanged: (value) {
-                                controller.updateCity(value);
-                              },
-                              context: context,
-                            ),
-                            SizedBox(height: 16.h),
+
+                            _buildDropdowns(controller, context),
+
+                            // Address Field
                             _buildTextField(
                               label: "Address",
                               initialValue: controller.address,
-                              onChanged: (value) {
-                                controller.updateAddress(value);
-                              },
+                              onChanged: (value) =>
+                                  controller.updateAddress(value),
                               context: context,
                             ),
                             SizedBox(height: 16.h),
-                            _buildTextField(
-                              label: "Date of Birth",
-                              initialValue: controller.dob,
-                              onChanged: (value) {
-                                controller.updateDob(value);
-                              },
-                              keyboardType: TextInputType.datetime,
-                              context: context,
-                            ),
+
                             SizedBox(height: 16.h),
+
                             _buildGenderSelection(controller, context),
                             SizedBox(height: 40.h),
+
                             _buildUpdateButton(controller, context),
                           ],
                         ),
@@ -153,13 +108,12 @@ class EditProfileView extends StatelessWidget {
             icon: Icon(Icons.arrow_back,
                 color: Theme.of(context).colorScheme.onPrimary),
             onPressed: () {
-              // Back button action
               Get.back();
             },
           ),
           Expanded(
             child: Text(
-              "Profile",
+              "Edit Profile",
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onPrimary,
@@ -173,11 +127,81 @@ class EditProfileView extends StatelessWidget {
     );
   }
 
+  Widget _buildDateOfBirthField(
+      EditProfileController controller, BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Date of Birth",
+          style: TextStyle(
+            color:
+                Theme.of(context).textTheme.bodyMedium?.color ?? Colors.black,
+            fontSize: 14.sp,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        SizedBox(height: 8.h),
+        TextFormField(
+          readOnly: true, // Make the field non-editable
+          controller:
+              TextEditingController(text: controller.dob), // Display DOB value
+          style: TextStyle(
+            fontSize: 16.sp,
+            fontWeight: FontWeight.w400,
+            color: Theme.of(context).textTheme.bodyLarge?.color ?? Colors.black,
+          ),
+          decoration: InputDecoration(
+              suffixIcon: GestureDetector(
+                onTap: () async {
+                  _selectDate(context, controller); // Open Date Picker
+                },
+                child: Icon(
+                  Icons.calendar_today,
+                  size: 20.sp,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              ),
+              filled: true,
+              fillColor: Theme.of(context).colorScheme.surface,
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 12.w, vertical: 14.h),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(4.r),
+                borderSide: BorderSide(
+                  color: Theme.of(context).dividerColor,
+                  width: 1.0,
+                ),
+              )),
+          onTap: () async {
+            _selectDate(context, controller); 
+          },
+        ),
+      ],
+    );
+  }
+
+  Future<void> _selectDate(
+      BuildContext context, EditProfileController controller) async {
+    DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.parse(controller.dob), // Default date
+      firstDate: DateTime(1900), // Start date
+      lastDate: DateTime.now(), // End date
+    );
+
+    if (pickedDate != null) {
+      String formattedDate =
+          "${pickedDate.year}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.day.toString().padLeft(2, '0')}";
+      controller.updateDob(formattedDate); // Update DOB in controller
+    }
+  }
+
   // Profile Picture Widget
-  Widget _buildProfilePicture(BuildContext context, EditProfileController controller) {
+  Widget _buildProfilePicture(
+      BuildContext context, EditProfileController controller) {
     return GestureDetector(
       onTap: () {
-        // Add functionality to change the profile picture
         _showImageSourceSelector(context, controller);
       },
       child: CircleAvatar(
@@ -212,7 +236,7 @@ class EditProfileView extends StatelessWidget {
                 title: const Text('Photo Library'),
                 onTap: () async {
                   Navigator.of(context).pop();
-                  await controller.pickImage(ImageSource.gallery, controller);
+                  await controller.pickImage(ImageSource.gallery);
                 },
               ),
               ListTile(
@@ -220,7 +244,7 @@ class EditProfileView extends StatelessWidget {
                 title: const Text('Camera'),
                 onTap: () async {
                   Navigator.of(context).pop();
-                  await controller.pickImage(ImageSource.camera, controller);
+                  await controller.pickImage(ImageSource.camera);
                 },
               ),
             ],
@@ -230,7 +254,7 @@ class EditProfileView extends StatelessWidget {
     );
   }
 
-  // Text Field Widget
+  // Editable Text Field
   Widget _buildTextField({
     required String label,
     required String initialValue,
@@ -247,51 +271,29 @@ class EditProfileView extends StatelessWidget {
             color:
                 Theme.of(context).textTheme.bodyMedium?.color ?? Colors.black,
             fontSize: 14.sp,
-            fontWeight: FontWeight.w500, // Slightly bold as in the screenshot
+            fontWeight: FontWeight.w500,
           ),
         ),
-        SizedBox(height: 8.h), // Proper spacing between label and field
+        SizedBox(height: 8.h),
         TextFormField(
           initialValue: initialValue,
           onChanged: onChanged,
           keyboardType: keyboardType,
           style: TextStyle(
             fontSize: 16.sp,
-            fontWeight: FontWeight.w400, // Normal text weight
+            fontWeight: FontWeight.w400,
             color: Theme.of(context).textTheme.bodyLarge?.color ?? Colors.black,
           ),
           decoration: InputDecoration(
             filled: true,
-            fillColor: Theme.of(context)
-                .colorScheme
-                .surface, // Matches the white background
-            contentPadding: EdgeInsets.symmetric(
-                horizontal: 12.w,
-                vertical: 10.h), // Matches padding in the screenshot
+            fillColor: Theme.of(context).colorScheme.surface,
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
             border: OutlineInputBorder(
-              borderRadius:
-                  BorderRadius.circular(4.r), // Slightly rounded corners
-              borderSide: BorderSide(
-                color:
-                    Theme.of(context).dividerColor, // Default thin border color
-                width: 1.0, // Thin border width
-              ),
-            ),
-            enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(4.r),
               borderSide: BorderSide(
-                color: Theme.of(context)
-                    .dividerColor, // Visible even when not selected
+                color: Theme.of(context).dividerColor,
                 width: 1.0,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(4.r),
-              borderSide: BorderSide(
-                color: Theme.of(context)
-                    .colorScheme
-                    .primary, // Primary color on focus
-                width: 1.5, // Slightly thicker border on focus
               ),
             ),
           ),
@@ -300,7 +302,49 @@ class EditProfileView extends StatelessWidget {
     );
   }
 
-  // Gender Selection Widget
+  // Read-Only Field
+  Widget _buildReadOnlyField({
+    required String label,
+    required String value,
+    required BuildContext context,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: TextStyle(
+            color:
+                Theme.of(context).textTheme.bodyMedium?.color ?? Colors.black,
+            fontSize: 14.sp,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        SizedBox(height: 8.h),
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surface,
+            borderRadius: BorderRadius.circular(4.r),
+            border: Border.all(
+              color: Theme.of(context).dividerColor,
+              width: 1.0,
+            ),
+          ),
+          child: Text(
+            value,
+            style: TextStyle(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w400,
+              color:
+                  Theme.of(context).textTheme.bodyLarge?.color ?? Colors.black,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildGenderSelection(
       EditProfileController controller, BuildContext context) {
     return Column(
@@ -315,7 +359,7 @@ class EditProfileView extends StatelessWidget {
         ),
         SizedBox(height: 8.h),
         Row(
-          mainAxisAlignment: MainAxisAlignment.start, // Aligns to the left
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             GestureDetector(
               onTap: () => controller.updateGender("Male"),
@@ -348,7 +392,7 @@ class EditProfileView extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(width: 40.w), // Space between Male and Female options
+            SizedBox(width: 40.w),
             GestureDetector(
               onTap: () => controller.updateGender("Female"),
               child: Column(
@@ -408,6 +452,118 @@ class EditProfileView extends StatelessWidget {
           color: Theme.of(context).colorScheme.onPrimary,
         ),
       ),
+    );
+  }
+
+  Widget _buildDropdowns(
+      EditProfileController controller, BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Nationality Dropdown
+        Padding(
+          padding: EdgeInsets.only(bottom: 16.h),
+          child: _buildDropdown(
+            label: "Nationality",
+            value: controller.nationality,
+            items: ["India", "USA", "UK", "Australia", "Canada"],
+            onChanged: (value) {
+              controller.updateNationality(value ?? "India");
+            },
+            context: context,
+          ),
+        ),
+
+        // State and City in Row
+        Row(
+          children: [
+            // State Dropdown
+            Expanded(
+              child: _buildDropdown(
+                label: "State",
+                value: controller.state,
+                items: [
+                  "Tamil Nadu",
+                  "Karnataka",
+                  "Kerala",
+                  "Maharashtra",
+                  "Delhi"
+                ],
+                onChanged: (value) {
+                  controller.updateState(value ?? "");
+                },
+                context: context,
+              ),
+            ),
+            SizedBox(width: 16.w), // Space between State and City
+
+            // City Dropdown
+            Expanded(
+              child: _buildDropdown(
+                label: "City",
+                value: controller.city,
+                items: ["Chennai", "Bangalore", "Mumbai", "Delhi", "Hyderabad"],
+                onChanged: (value) {
+                  controller.updateCity(value ?? "");
+                },
+                context: context,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDropdown({
+    required String label,
+    required String value,
+    required List<String> items,
+    required Function(String?) onChanged,
+    required BuildContext context,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: TextStyle(
+            color:
+                Theme.of(context).textTheme.bodyMedium?.color ?? Colors.black,
+            fontSize: 14.sp,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        SizedBox(height: 8.h),
+        DropdownButtonFormField<String>(
+          value: value,
+          onChanged: onChanged,
+          items: items
+              .map((String item) => DropdownMenuItem<String>(
+                    value: item,
+                    child: Text(
+                      item,
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        color: Theme.of(context).textTheme.bodyLarge?.color ??
+                            Colors.black,
+                      ),
+                    ),
+                  ))
+              .toList(),
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: Theme.of(context).colorScheme.surface,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(4.r),
+              borderSide: BorderSide(
+                color: Theme.of(context).dividerColor,
+                width: 1.0,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
