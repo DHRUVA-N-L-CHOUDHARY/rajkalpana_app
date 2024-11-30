@@ -53,50 +53,41 @@ class RegisterUserView extends StatelessWidget {
                 ),
                 SizedBox(height: 10.h),
                 _buildTextFormField(
-                  label: "First name",
-                  controller: c.firstNameController,
-                  errorText: c.firstNameError,
-                  onChanged: c.validateFirstName,
-                ),
-
-                SizedBox(height: 10.h),
-                // Last Name
-                _buildTextFormField(
-                  label: "Last name",
-                  controller: c.lastNameController,
-                  errorText: c.lastNameError,
-                  onChanged: c.validateLastName,
-                ),
+                    label: "Name",
+                    controller: c.nameController,
+                    errorText: c.nameError,
+                    onChanged: c.validateName,
+                    context: context),
 
                 SizedBox(height: 10.h),
                 // Email Address
                 _buildTextFormField(
-                  label: "Email address",
-                  controller: c.emailController,
-                  errorText: c.emailError,
-                  onChanged: c.validateEmail,
-                  keyboardType: TextInputType.emailAddress,
-                ),
+                    label: "Email address",
+                    controller: c.emailController,
+                    errorText: c.emailError,
+                    onChanged: c.validateEmail,
+                    keyboardType: TextInputType.emailAddress,
+                    context: context),
 
                 SizedBox(height: 10.h),
                 // Password
                 _buildPasswordField(
-                  label: "Password",
-                  controller: c.passwordController,
-                  isVisible: c.isPasswordVisible,
-                  errorText: c.passwordError,
-                  onChanged: c.validatePassword,
-                ),
+                    label: "Password",
+                    controller: c.passwordController,
+                    isVisible: c.isPasswordVisible,
+                    errorText: c.passwordError,
+                    onChanged: c.validatePassword,
+                    context: context),
 
                 SizedBox(height: 10.h),
                 // Confirm Password
                 _buildPasswordField(
-                  label: "Confirm password",
-                  controller: c.confirmPasswordController,
-                  isVisible: c.isConfirmPasswordVisible,
-                  errorText: c.confirmPasswordError,
-                  onChanged: c.validateConfirmPassword,
-                ),
+                    label: "Confirm password",
+                    controller: c.confirmPasswordController,
+                    isVisible: c.isConfirmPasswordVisible,
+                    errorText: c.confirmPasswordError,
+                    onChanged: c.validateConfirmPassword,
+                    context: context),
 
                 SizedBox(height: 10.h),
                 // Date of Birth
@@ -116,13 +107,13 @@ class RegisterUserView extends StatelessWidget {
                   },
                   child: AbsorbPointer(
                     child: _buildTextFormField(
-                      label: "Date of birth",
-                      controller: c.dobController,
-                      errorText: c.dobError,
-                      onChanged: c.validateDob,
-                      keyboardType: TextInputType.datetime,
-                      suffixIcon: Icon(Icons.calendar_today),
-                    ),
+                        label: "Date of birth",
+                        controller: c.dobController,
+                        errorText: c.dobError,
+                        onChanged: c.validateDob,
+                        keyboardType: TextInputType.datetime,
+                        suffixIcon: Icon(Icons.calendar_today),
+                        context: context),
                   ),
                 ),
 
@@ -206,20 +197,87 @@ class RegisterUserView extends StatelessWidget {
     required Function(String) onChanged,
     TextInputType keyboardType = TextInputType.text,
     Widget? suffixIcon,
+    required BuildContext context, // For theme access
   }) {
     return Obx(() {
-      return TextFormField(
-        controller: controller,
-        keyboardType: keyboardType,
-        onChanged: onChanged,
-        decoration: InputDecoration(
-          labelText: label,
-          errorText: errorText.value.isNotEmpty ? errorText.value : null,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8.r),
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: TextStyle(
+              color:
+                  Theme.of(context).textTheme.bodyMedium?.color ?? Colors.black,
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w500,
+            ),
           ),
-          suffixIcon: suffixIcon,
-        ),
+          SizedBox(height: 8.h),
+          TextFormField(
+            controller: controller,
+            keyboardType: keyboardType,
+            onChanged: onChanged,
+            style: TextStyle(
+              fontSize: 16.sp,
+              color:
+                  Theme.of(context).textTheme.bodyLarge?.color ?? Colors.black,
+              fontWeight: FontWeight.w400,
+            ),
+            decoration: InputDecoration(
+              labelText: label,
+              errorText: errorText.value.isNotEmpty ? errorText.value : null,
+              labelStyle: TextStyle(
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w500,
+                color: Theme.of(context).textTheme.bodyMedium?.color ??
+                    Colors.black,
+              ),
+              filled: true,
+              fillColor: Theme.of(context)
+                  .colorScheme
+                  .surface, // Same as your other fields
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 12.w, vertical: 14.h),
+              suffixIcon:
+                  suffixIcon, // Allows suffix icons such as date picker or others
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.r),
+                borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.primary,
+                  width: 1.0,
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.r),
+                borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.primary,
+                  width: 1.0,
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.r),
+                borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.primary,
+                  width: 1.5,
+                ),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.r),
+                borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.error,
+                  width: 1.0,
+                ),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.r),
+                borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.error,
+                  width: 1.5,
+                ),
+              ),
+            ),
+          ),
+        ],
       );
     });
   }
@@ -230,26 +288,74 @@ class RegisterUserView extends StatelessWidget {
     required RxBool isVisible,
     required RxString errorText,
     required Function(String) onChanged,
+    required BuildContext context,
   }) {
     return Obx(() {
-      return TextFormField(
-        controller: controller,
-        obscureText: !isVisible.value,
-        onChanged: onChanged,
-        decoration: InputDecoration(
-          labelText: label,
-          errorText: errorText.value.isNotEmpty ? errorText.value : null,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8.r),
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: TextStyle(
+              color:
+                  Theme.of(context).textTheme.bodyMedium?.color ?? Colors.black,
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w500,
+            ),
           ),
-          suffixIcon: IconButton(
-            icon:
-                Icon(isVisible.value ? Icons.visibility : Icons.visibility_off),
-            onPressed: () {
-              isVisible.value = !isVisible.value;
-            },
+          SizedBox(height: 8.h),
+          TextFormField(
+            controller: controller,
+            obscureText: !isVisible.value,
+            onChanged: onChanged,
+            decoration: InputDecoration(
+              labelText: label,
+              errorText: errorText.value.isNotEmpty ? errorText.value : null,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.r),
+                borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.primary,
+                  width: 1.0,
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.r),
+                borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.primary,
+                  width: 1.0,
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.r),
+                borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.primary,
+                  width: 1.5,
+                ),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.r),
+                borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.error,
+                  width: 1.0,
+                ),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.r),
+                borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.error,
+                  width: 1.5,
+                ),
+              ),
+              suffixIcon: IconButton(
+                icon: Icon(
+                    isVisible.value ? Icons.visibility : Icons.visibility_off),
+                onPressed: () {
+                  isVisible.value = !isVisible.value;
+                },
+              ),
+            ),
           ),
-        ),
+        ],
       );
     });
   }

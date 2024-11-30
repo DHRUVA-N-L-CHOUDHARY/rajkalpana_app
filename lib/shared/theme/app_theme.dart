@@ -14,7 +14,10 @@ class AppTheme {
     colorScheme: ColorScheme.fromSwatch(
       primarySwatch: customColor,
       brightness: Brightness.light, // Ensure brightness matches
-    ).copyWith(surface: Colors.white),
+    ).copyWith(
+      surface: Colors.white,
+      error: Colors.red,
+    ),
     textTheme: TextTheme(
       bodyLarge: TextStyle(color: AppColors.textLight),
       bodyMedium: TextStyle(color: AppColors.textLight),
@@ -40,7 +43,10 @@ class AppTheme {
     colorScheme: ColorScheme.fromSwatch(
       primarySwatch: customColor,
       brightness: Brightness.dark, // Ensure brightness matches
-    ).copyWith(surface: Colors.black),
+    ).copyWith(
+      surface: Colors.black,
+      error: Colors.red,
+    ),
     textTheme: TextTheme(
       bodyLarge: TextStyle(color: AppColors.textDark),
       bodyMedium: TextStyle(color: AppColors.textDark),

@@ -1,8 +1,7 @@
 import 'package:get/get.dart';
 
 class BusListingController extends GetxController {
-  // TODO: Add controller properties and methods here
-  int selectedIndex = 2; // Start with the selected date in the center
+  int selectedIndex = 2;
   List<DateTime> dateList = [];
 
   @override
@@ -12,10 +11,13 @@ class BusListingController extends GetxController {
   }
 
   void initializeDates() {
-    // Set initial date centered around today
     DateTime today = DateTime.now();
-    dateList =
-        List.generate(5, (index) => today.add(Duration(days: index - 2)));
+    today = DateTime(today.year, today.month, today.day);
+    dateList = List.generate(
+      5,
+      (index) => today.add(Duration(days: index - 2)),
+    ).where((date) => !date.isBefore(today)).toList();
+    selectedIndex = 0;
     update();
   }
 
@@ -27,9 +29,16 @@ class BusListingController extends GetxController {
 
   void updateDatesAroundSelected() {
     DateTime selectedDate = dateList[selectedIndex];
-    selectedIndex = 2;
+    DateTime today = DateTime.now();
+    today = DateTime(today.year, today.month, today.day);
+
     dateList = List.generate(
-        5, (index) => selectedDate.add(Duration(days: index - 2)));
-        update();
+      5,
+      (index) => selectedDate.add(Duration(days: index - 2)),
+    ).where((date) => !date.isBefore(today)).toList();
+
+    selectedIndex =
+        dateList.contains(selectedDate) ? dateList.indexOf(selectedDate) : 0;
+    update();
   }
 }

@@ -1,37 +1,24 @@
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:travel_bus_app/shared/utils/constants.dart';
+import 'package:raj_kalpana_travels/shared/utils/constants.dart';
 
 import '../../../data/services/local_storage_service.dart';
 
 class EditProfileController extends GetxController {
   // Controller properties for each field
-  String firstName = "Kayal";
+  String name = "Kayal";
   String profileImage = appConst + AppImages.kAppIconNamed;
-  String lastName = "Vizhi";
-  String mobileNumber = "+91 88475 48524";
   String emergencyPhone = "+91 98765 43210";
-  String email = "eddykim@krmail.com";
-  String nationality = "Indian";
+  String nationality = "India"; // Default set to India
   String state = "Tamil Nadu";
   String city = "Chennai";
   String address = "123, Street Name, Area, Chennai - 600001";
   String dob = "2002-01-01"; // Default in YYYY-MM-DD format
   String gender = "Female";
+  String pinCode = "600001"; // Pin code for fetching state and city
 
-  // Update methods for each field
-  void updateFirstName(String newFirstName) {
-    firstName = newFirstName;
-    update();
-  }
-
-  void updateLastName(String newLastName) {
-    lastName = newLastName;
-    update();
-  }
-
-  void updateMobileNumber(String newMobileNumber) {
-    mobileNumber = newMobileNumber;
+  void updateName(String newName) {
+    name = newName;
     update();
   }
 
@@ -40,23 +27,9 @@ class EditProfileController extends GetxController {
     update();
   }
 
-  void updateEmail(String newEmail) {
-    email = newEmail;
-    update();
-  }
-
-  void updateNationality(String newNationality) {
-    nationality = newNationality;
-    update();
-  }
-
-  void updateState(String newState) {
-    state = newState;
-    update();
-  }
-
-  void updateCity(String newCity) {
-    city = newCity;
+  void updatePinCode(String newPinCode) {
+    pinCode = newPinCode;
+    fetchLocationDetailsFromPinCode(newPinCode);
     update();
   }
 
@@ -77,29 +50,46 @@ class EditProfileController extends GetxController {
 
   Future<void> updateProfilePicture(String imagePath) async {
     profileImage = imagePath;
-    update(); // Notify the UI to update
+    update(); 
 
-    // Save image path in local storage
     final user = await LocalStorageService.getUser();
     if (user != null) {
-      // user.profileImage = imagePath;
-      // await UserRepository.updateUser(user);
     }
   }
 
-  Future<void> pickImage(
-      ImageSource source, EditProfileController controller) async {
+  Future<void> pickImage(ImageSource source) async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: source);
     if (pickedFile != null) {
-      await controller.updateProfilePicture(pickedFile.path);
+      await updateProfilePicture(pickedFile.path);
     }
   }
 
-  // Method to save the updated profile details
+    void updateNationality(String newNationality) {
+    nationality = newNationality;
+    update();
+  }
+
+  void updateState(String newState) {
+    state = newState;
+    update();
+  }
+
+  void updateCity(String newCity) {
+    city = newCity;
+    update();
+  }
+  void fetchLocationDetailsFromPinCode(String pinCode) {
+    if (pinCode == "600001") {
+      state = "Tamil Nadu";
+      city = "Chennai";
+    } else {
+      state = "Unknown State";
+      city = "Unknown City";
+    }
+  }
+
   void saveProfile() {
-    // Logic to save the updated details can be added here
-    // For example, making an API call to update the profile on the server
     Get.snackbar(
       "Profile Updated",
       "Your profile details have been updated successfully!",

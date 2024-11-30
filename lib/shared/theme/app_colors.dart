@@ -19,6 +19,10 @@ class AppColors {
   static const Color textLight = Colors.black;
   static const Color textDark = Colors.white;
 
+  //Divider Color
+  static const Color dividerLight = Colors.black;
+  static const Color dividerDark = Colors.white;
+
   // Accent Colors
   static const Color accent = Color(0xFFFFC107); // Amber
 

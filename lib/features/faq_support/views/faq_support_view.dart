@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:travel_bus_app/shared/utils/constants.dart';
+import 'package:raj_kalpana_travels/shared/utils/constants.dart';
 import '../controllers/faq_support_controller.dart';
 
 class FaqSupportView extends StatelessWidget {

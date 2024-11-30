@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:otp_pin_field/otp_pin_field.dart';
-import 'package:travel_bus_app/shared/utils/constants.dart';
+import 'package:raj_kalpana_travels/shared/utils/constants.dart';
 import '../../../routes/app_pages.dart';
 import '../../../shared/widgets/app_button.dart';
 
